@@ -6,40 +6,63 @@ This project analyzes hotel reservation data to uncover trends, customer behavio
 ## Overview
 This project explores and visualizes hotel reservation data using **Python** and libraries such as:
 - **Pandas** – for data manipulation  
-- **Matplotlib** and **Seaborn** – for data visualization  
+- **Matplotlib** – for data visualization  
 - **NumPy** – for numerical computations  
 
 
 ## Objectives
 - Analyze booking trends over time  
 - Identify factors influencing cancellations  
-- Study the impact of lead time on booking success  
+- Study the impact of lead time on cancellations  
 - Compare customer behavior across different market segments  
 
 
 ## Dataset
+[Hotel booking demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand) — 119,390 bookings of a
+City Hotel and a Resort Hotel in Portugal, with arrival dates from **July 2015 to August 2017**.
+
 The dataset includes the following key fields:
 - `hotel` – Type of hotel (City or Resort)  
-- `lead_time` – Number of days between booking and check-in  
-- `arrival_date` – Date of arrival  
-- `stays_in_weekend_nights` – Number of weekend nights booked  
-- `adults`, `children`, `babies` – Number of guests  
-- `meal` – Type of meal booked  
-- `market_segment` – Source of the booking (e.g., direct, corporate)  
 - `is_canceled` – Whether the booking was canceled  
+- `lead_time` – Number of days between booking and arrival  
+- `arrival_date_year`, `arrival_date_month` – Date of arrival  
+- `stays_in_weekend_nights`, `stays_in_week_nights` – Number of nights booked  
+- `adults`, `children`, `babies` – Number of guests  
+- `market_segment` – Source of the booking (e.g., online travel agent, direct, corporate)  
+- `deposit_type` – No Deposit / Non Refund / Refundable  
+- `adr` – Average daily rate (price per night)  
+
+**Cleaning steps:** missing values in `children`, `agent` and `company` are filled with 0, duplicate rows are removed,
+and bookings with no guests or an invalid price (negative, or a single €5,400 data entry error) are dropped.
+Revenue is computed as `adr × nights` for non-cancelled bookings.
+
+
+## How to Run
+1. Download `hotel_bookings.csv` from the Kaggle link above and save it next to the notebook as `Hotel_Bookings.csv`.
+2. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Open and run the notebook:
+   ```bash
+   jupyter notebook Hotel_Project.ipynb
+   ```
 
 
 ## Key Findings
 
-**1. City Hotel seem to be more successful though it has more reservations and more revenue although this hotel has 6.5 percent more cancellation than Resort hotel**
+**1. City Hotel has 1.57 times more reservations and more total revenue (≈ €12.2M vs €10.8M), but it also has a higher cancellation rate: 30.1% vs 23.5% for Resort Hotel (6.6 percentage points more).**
 
-**2. Passengers mostly select the __A__, __D__, __E__ and __F__ types of rooms**
+**2. Room type __A__ is by far the most booked (≈ 65% of bookings), followed by __D__ (≈ 20%), __E__ (≈ 7%) and __F__ (≈ 3%). The same room types also bring the most revenue.**
 
-**3. Even though the minimum and mean of prices of two hotels are almost same, the City hotel with having high revenue for some conditions has a significant high amount of revenue in some reservations.**
+**3. City Hotel rooms are more expensive on average (median adr ≈ €105 vs €80), while Resort Hotel prices vary much more (std ≈ €64 vs €42) because of strong seasonal pricing. The very large maximum price seen in the raw data (€5,400) was a single data entry error and was removed.**
 
-**4. Portugal, United Kingdom, France, Spain and Germany are the 5 top nationalities between passengers booked rooms.**
+**4. Portugal, United Kingdom, France, Spain and Germany are the 5 top nationalities of the guests; Portugal alone accounts for about 31% of all bookings.**
 
-**5. Online travel agencies have the greater part of the market in reserving methods.**
+**5. Online travel agencies have the greater part of the market (≈ 59% of bookings), followed by offline travel agencies (≈ 16%) and direct bookings (≈ 14%).**
 
-**6. From start of the year the number of reservations increase until August. Months July and August are the peak months in numbers of reservations. After August we can see a 
-decreasing pattern. In October there is slight increase in reservation. Number of reservations in November and December are almost same, both less than October.** 
+**6. In 2016 (the only complete year), January and February are the quietest months, March–July stay at a steady level (≈ 3,500–3,850 bookings), August is the peak month and October is the second busiest. The cancellation rate of Resort Hotel is clearly seasonal (lowest in winter, highest in summer), while City Hotel stays between ~25% and ~35% all year.**
+
+**7. Lead time is strongly related to cancellations: only ≈ 8% of bookings made within a week of arrival are cancelled, compared with ≈ 35–40% of bookings made more than 3 months in advance.**
+
+**8. Surprisingly, "Non Refund" deposits have a ≈ 95% cancellation rate. These are mostly group bookings made through agencies, so this is a known quirk of the dataset rather than evidence that deposits encourage cancellations.**

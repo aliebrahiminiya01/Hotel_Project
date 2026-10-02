@@ -1,0 +1,13 @@
+# Dataset (download it from Kaggle, see README)
+Hotel_Bookings.csv
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+venv*/
+.venv/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
